@@ -16,6 +16,8 @@ DROP TABLE tbl_student;
 
 SELECT * FROM tbl_student;
 
+DROP TABLE tbl_dept;
+
 CREATE TABLE tbl_dept (
     d_code CHAR(4) PRIMARY KEY,
     d_name nVARCHAR2(20) NOT NULL UNIQUE,
