@@ -79,8 +79,35 @@ CASCADE;
 ALTER TABLE tbl_score           
 ADD CONSTRAINT fk_st_sc         
 FOREIGN KEY(sc_num)             
-REFERENCES tbl_student(st_num); 
+REFERENCES tbl_student(st_num)
+ON DELETE CASCADE; -- 만약 부모테이블에서 데이터를 삭제할 때,
+                   -- 삭제되는 키값의 데이터가 자식테이블에 있으면 같이 삭제
+-- ON DELETE CASCADE SET NULL; // 오라클에선 지원안됨
+-- ON UPDATE CASCADE; // 만약 부모테이블에서 키값이 변경되면 자식테이블의 
+--                       모든데이터를 찾아서 같은 값으로 바꿔라
                         
+DELETE FROM tbl_student WHERE st_num = '20001';
+
+-- [ FK를 설정하는 대상 ]
+-- 테이블 간의 데이터가 1:N인 경우 -> N상태의 테이블에 설정
+--      REFERENCES : 1상태의 테이블
+-- 테이블 간의 데이터가 1:1인 경우 -> WorkTable에 설정
+--      REFERENCES : MasterTable에 설정
+
+
+-- 학생정보, 학과정보 간의 FK를 설정해보자.
+-- 학과정보는 학과명(코드)이 유일한 값으로 정해져 있다. 같은 이름의 학과는 존재할 수 없다.
+-- 학생정보에는 학생마다 학과가 다르거나 같을 수 있어서 수없이 많은 중복데이터가 있다.
+-- 부모테이블 : 학과정보 (1인경우)
+-- 자식테이블 : 학생정보 중 학과 (N인 경우)
+ALTER TABLE tbl_student
+ADD CONSTRAINT fk_d_st -- 한 스키마 내에서 이름은 유일해야 한다.
+FOREIGN KEY(st_dept)
+REFERENCES tbl_dept(d_code);
+
+
+
+
 
 
 
