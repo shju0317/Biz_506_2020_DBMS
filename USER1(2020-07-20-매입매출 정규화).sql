@@ -174,6 +174,56 @@ FROM tbl_iolist IO
         ON IO.io_dname = B.b_name
 WHERE B.b_name IS NULL;        
 
+-- [ iolist 에 거래처 코드 UPDATE ]
+-- 지금 생성한 tbl_buyer 테이블에는 거래처명은 같고 대표자가 다른 데이터가 있다.
+-- 이 데이터에서 거래처명으로 조회를 하면 출력되는 레코드(row)가 2개 이상인 경우가 발생한다.
+-- 따라서 이 쿼리를 실행하면 ORA-01427: single-row subquery returns more than one row 오류가 발생한다
+-- 이 쿼리는 거래처명과 CEO 값을 동시에 제한하여 1개의 row값만 Sub query에서 만들어 지도록 해야 한다.
+UPDATE tbl_iolist IO
+SET io_bcode =
+(
+    SELECT b_code
+    FROM tbl_buyer B
+    WHERE B.b_name = io.io_dname 
+            AND B.b_ceo = IO.io_dceo
+);
+
+SELECT io_bcode, io_dname, b_code, b_name
+FROM tbl_iolist IO
+    LEFT JOIN tbl_buyer B
+        ON IO.io_bcode = B.b_code
+WHERE b_code IS NULL OR b_name IS NULL;
+
+-- 데이터를 tbl_product, tbl_buyer 테이블로 분리 했으니
+-- tbl_iolist에서 io_pname, io_dname, io_dceo 칼럼은 필요가 없으므로 제거한다.
+ALTER TABLE tbl_iolist DROP COLUMN io_pname;
+ALTER TABLE tbl_iolist DROP COLUMN io_dname;
+ALTER TABLE tbl_iolist DROP COLUMN io_dceo;
+
+SELECT * FROM tbl_iolist;
+
+CREATE VIEW view_iolist
+AS
+(
+SELECT io_seq, io_date, 
+        io_bcode, b_name,b_ceo,b_tel, 
+        io_pcode, p_name,p_iprice, p_oprice,
+        io_inout,
+        DECODE(io_inout,'매입',io_price,0) AS 매입단가, 
+        DECODE(io_inout,'매입',io_amt,0) AS 매입금액,
+        DECODE(io_inout,'매출',io_price,0) AS 매출단가, 
+        DECODE(io_inout,'매출',io_amt,0) AS 매출금액
+FROM tbl_iolist IO
+    LEFT JOIN tbl_product P
+        ON io.io_pcode = P.p_code
+    LEFT JOIN tbl_buyer B
+        ON io.io_bcode = b.b_code
+);
+
+
+SELECT * FROM view_iolist
+WHERE io_date BETWEEN '2019-01-01' AND '2019-01-31'
+ORDER BY io_date ;
 
 
 
