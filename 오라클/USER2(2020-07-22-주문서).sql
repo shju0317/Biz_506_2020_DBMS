@@ -52,11 +52,11 @@ SELECT seq_order.NEXTVAL FROM DUAL;
 
 
 INSERT INTO tbl_order(o_seq, o_date, o_num, o_cnum, o_pcode) 
-    VALUES (seq_order.NEXTVAL, '2020-07-22', '00001', 'C0032', 'P00001');
+    VALUES (seq_order.NEXTVAL, '2020-07-22', 'O00001', 'C0032', 'P00001');
 INSERT INTO tbl_order(o_seq, o_date, o_num, o_cnum, o_pcode) 
-    VALUES (seq_order.NEXTVAL, '2020-07-22',  '00001', 'C0032', 'P00002');I
+    VALUES (seq_order.NEXTVAL, '2020-07-22',  'O00001', 'C0032', 'P00002');I
 INSERT INTO tbl_order(o_seq, o_date, o_num, o_cnum, o_pcode) 
-    VALUES (seq_order.NEXTVAL, '2020-07-22',  '00001', 'C0032', 'P00003');
+    VALUES (seq_order.NEXTVAL, '2020-07-22',  'O00001', 'C0032', 'P00003');
 
 ---------------------------------------------
 -- 주문번호    고객번호     상품코드
@@ -112,8 +112,11 @@ ALTER TABLE tbl_order
 SELECT * FROM tbl_order;
 
 INSERT INTO tbl_order(o_seq, o_date, o_num, o_cnum, o_pcode) 
-    VALUES (seq_order.NEXTVAL, '2020-07-22', '00022', 'C0055', 'P00067');
+    VALUES (seq_order.NEXTVAL, '2020-07-22', 'O00022', 'C0055', 'P00067');
 
+DELETE 
+FROM tbl_order
+WHERE o_seq = 54;
 
 COMMIT;
 
