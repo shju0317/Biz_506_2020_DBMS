@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <!-- 
+ 	[ order-mapper.xml ]
+ 	java에서 기본 CRUD를 구현할 interface를 만들고
+ 	interface의 실제 작동되는 코드를 구현하기 위한 SQL정보를 설정하는 파일.
+ 	
+ 	namespace
+ 	: 지금부터 작성하는 mapper(xml) 파일의 코드와
+ 	  com.biz.order.mapper.OrderDao 인터페이스를 서로 참조하여
+ 	  OrderDaoImpl 클래스를 만들겠다는 선언
+ 	  
+ 	  mybatis는 mapper파일과 OrderDao인터페이스를 참조하여
+ 	  내부에서 OrderDaoImpl과 같은 클래스를 만들고
+ 	  구체적인 코드를 생성해 놓는다.
+  -->
+ <mapper namespace="com.biz.order.mapper.OrderDao">
+ 
+ 	<select id="selectAll" resultType="OrderVO">
+ 		SELECT * 
+ 		FROM tbl_order 
+ 		ORDER BY o_seq DESC
+ 	</select>
+ 	
+ 	<select id="findBySeq" resultType="OrderVO">
+ 		SELECT * 
+ 		FROM tbl_order 
+ 		WHERE o_seq = #{seq}
+ 	</select>
+ 	
+ 	<select id="findByPCode" resultType="OrderVO">
+ 		SELECT * 
+ 		FROM tbl_order 
+ 		WHERE o_pcode = #{pcode}
+ 	</select>
+ 	
+ 	<select id="findByPName" resultType="OrderVO">
+ 		SELECT * 
+ 		FROM tbl_order 
+ 		WHERE o_pname LIKE '%' || #{pname} || '%'
+ 	</select>
+ 	
+ 	<select id="findByDateDistance" resultType="OrderVO">
+ 		SELECT * 
+ 		FROM tbl_order 
+ 		WHERE o_date BETWEEN #{start_date} AND #{end_date}
+ 	</select>
+ 	
+ 	<insert id="insert" parameterType="OrderVO">
+ 		INSERT INTO tbl_order (
+ 			O_SEQ,
+			O_NUM,
+			O_DATE,
+			O_CNUM,
+			O_PCODE,
+			O_PRICE,
+			O_QTY,
+			O_TOTAL 		
+ 		) VALUES (
+ 			SEQ_ORDER.NEXTVAL,
+			#{o_num},
+			#{o_date},
+			#{o_cnum},
+			#{o_pcode},
+			#{o_price},
+			#{o_qty},
+			#{o_total}
+ 		)
+ 	</insert>
+ 	<update id="update" parameterType="OrderVO">
+ 		UPDATE tbl_order 
+ 		SET
+			o_num		= #{o_num},
+			o_date		= #{o_date},
+			o_cnum		= #{o_cnum},
+			o_pcode		= #{o_pcode},
+			o_price		= #{o_price},
+			o_qty		= #{o_qty},
+			o_total		= #{o_total}
+		WHERE
+			o_seq		= #{o_seq}
+	 		
+ 	</update>
+ 	<delete id="delete">
+ 		DELETE FROM tbl_order WHERE o_seq = #{seq}
+ 	</delete>
+ 
+ 
+ </mapper> 
