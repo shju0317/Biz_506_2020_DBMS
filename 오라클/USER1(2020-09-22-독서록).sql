@@ -26,3 +26,5 @@ INSERT INTO tbl_books (seq, title, author, publisher)
 VALUES(SEQ_BOOKS.NEXTVAL, '오라클데이터베이스', '이지훈', '이지스퍼브리싱');
 
 COMMIT;
+
+DELETE FROM tbl_books;
