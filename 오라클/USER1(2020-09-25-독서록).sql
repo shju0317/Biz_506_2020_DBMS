@@ -76,3 +76,17 @@ SELECT SEQ_AUTHORITY.NEXTVAL, SUB.* FROM
 ) SUB;
 
 SELECT * FROM tbl_authority;
+
+DELETE FROM tbl_member;
+DELETE FROM tbl_authority;
+COMMIT;
+
+SELECT * FROM tbl_member;
+SELECT * FROM tbl_authority;
+
+SELECT * FROM tbl_member M
+    LEFT JOIN tbl_authority A
+        ON M.m_userid = A.m_userid;
+
+UPDATE tbl_member SET enabled = 1 WHERE m_userid = 'user';
+
