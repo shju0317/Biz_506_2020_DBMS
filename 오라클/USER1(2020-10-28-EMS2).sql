@@ -13,3 +13,12 @@ CREATE TABLE tbl_ems(
 );
 
 DROP TABLE tbl_ems;
+
+CREATE SEQUENCE seq_ems
+START WITH 1 INCREMENT BY 1;
+
+SELECT * FROM tbl_ems;
+
+DELETE FROM tbl_ems;
+
+COMMIT;
