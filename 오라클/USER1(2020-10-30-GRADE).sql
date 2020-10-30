@@ -21,4 +21,9 @@ SELECT * FROM tbl_grade;
 
 DELETE FROM tbl_grade;
 
+INSERT INTO tbl_grade(
+            id,g_sid,g_name,g_kor,g_eng,g_math,g_total,g_avg
+		) VALUES (
+			SEQ_GRADE.NEXTVAL, 'S111','신현주',100,100,90,290,95);
+
 COMMIT;
